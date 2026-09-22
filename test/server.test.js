@@ -17,7 +17,9 @@ const ACTOR_REQUIRED = [];
 // Every input the live actor exposes to a buyer must be exposed by the tool.
 // Hidden schema fields are excluded by rule: source_tag is the landing page
 // attribution tag the actor sets for itself, not something a caller supplies.
-const ACTOR_INPUTS = ["ai_api_key", "ai_check", "ai_provider", "batch_size", "bio_links", "escalate_on_block", "handles", "match_agencies", "platforms", "render_unreadable_pages", "scan_website_for_email"];
+// contribute_to_shared_pool is added by wo-influencer-newsletter-agency-pool-exchange-2026-09-22
+// Track 3; this list runs ahead of the live actor until that build ships.
+const ACTOR_INPUTS = ["ai_api_key", "ai_check", "ai_provider", "batch_size", "bio_links", "contribute_to_shared_pool", "escalate_on_block", "handles", "match_agencies", "platforms", "render_unreadable_pages", "scan_website_for_email"];
 
 // Speak MCP over stdio to the built server and return the tools/list result.
 // No APIFY_TOKEN is set, on purpose: a client must see capabilities before it
