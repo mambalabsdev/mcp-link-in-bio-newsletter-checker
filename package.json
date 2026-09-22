@@ -1,7 +1,7 @@
 {
   "name": "@mambalabsdev/mcp-link-in-bio-newsletter-checker",
   "displayName": "Link in Bio Scraper and Newsletter Detector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for the Mamba Labs Link in Bio Scraper and Newsletter Detector actor on Apify. Creator handles or link in bio URLs in, a newsletter verdict and contact details out.",
   "type": "module",
   "bin": {
