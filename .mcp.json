@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mamba-link-in-bio-newsletter-checker": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mambalabsdev/mcp-link-in-bio-newsletter-checker"
+      ],
+      "env": {
+        "APIFY_TOKEN": "your-apify-token"
+      }
+    }
+  }
+}
