@@ -6,6 +6,16 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
+// Optional per call spending cap, passed through to the actor's own max_charge_usd
+// input. The actor enforces it; this wrapper only forwards it when set.
+const MAX_CHARGE_USD = z
+  .number()
+  .min(0)
+  .optional()
+  .describe(
+    "Optional spending cap for this call, in USD, passed to the actor as max_charge_usd. The run stops before any charge that would take it past this amount and keeps every row already charged. Leave empty to rely only on the maximum charge per run set on your Apify account.",
+  );
+
 const here = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
   readFileSync(join(here, "..", "package.json"), "utf8"),
@@ -207,7 +217,7 @@ server.registerTool(
       "Follows the link in bio page behind a creator handle, or a link in bio URL you already hold, and reports whether the creator runs a newsletter, which email platform hosts it, and the page URL that proves it. Also returns the link in bio host, the creator's own website resolved through any redirect, every outbound link found, the public business email, a manager or booking email with the page it came from, a matched talent agency name and domain, and what the creator sells: course, coaching, digital product, merch, membership, brand deals, and discount codes. Every row carries newsletter_check_method, row_status, and error_reason, so a no is told apart from an unknown. Charges $0.002 per run plus $0.008 per creator checked, and on top of that $0.004 per headless browser render, $0.005 per website email scan, $0.003 per agency match, and $0.01 per Instagram bio fetch, each only when that step runs. Every paid step is its own switch (render_unreadable_pages, scan_website_for_email, match_agencies, escalate_on_block, ai_check), so a call runs only the checks you turn on, and max_residential_reads caps the residential Instagram reads. The AI check uses your own Anthropic or OpenAI key and is billed by them, not here. Contributes the public records it finds to a shared creator and agency pool that all users of this actor read from, so a later run reads what this one found; `contribute_to_shared_pool` is on by default and turning it off leaves the run reading the pool and writing nothing. Only public data already in the returned rows is contributed, nothing from your Apify account or your input, and a contribution is not charged. Requires an APIFY_TOKEN and consumes Apify credits. Read only.",
     annotations: {
       title: "Check a Link in Bio Page for a Newsletter",
-      readOnlyHint: true,
+      readOnlyHint: false,
       destructiveHint: false,
       idempotentHint: true,
       openWorldHint: true,
@@ -231,6 +241,7 @@ server.registerTool(
     // contribution off. Do not publish this wrapper before the actor build that carries the
     // field is live, or the actor is sent an input property its schema does not have.
     contribute_to_shared_pool: z.boolean().optional().describe("On by default. Contributes the public records this run finds to a shared creator and agency pool that all users of this actor read from, so a later run reads what this one found. Only public data already in the returned rows is sent, never your Apify account, your input list, or your API keys, and a contribution is not charged. Set false to read the pool and write nothing. Default: true."),
+      max_charge_usd: MAX_CHARGE_USD,
     },
   },
   async (args) =>

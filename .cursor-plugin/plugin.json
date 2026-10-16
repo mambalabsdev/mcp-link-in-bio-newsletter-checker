@@ -1,7 +1,7 @@
 {
   "name": "mcp-link-in-bio-newsletter-checker",
   "displayName": "Link in Bio Scraper and Newsletter Detector",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Follow a creator bio link and report the newsletter, what they sell, and the contact emails.",
   "author": {
     "name": "Mamba Labs",
