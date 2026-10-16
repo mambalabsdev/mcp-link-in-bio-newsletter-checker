@@ -50,6 +50,7 @@ Follow a creator bio link and report the newsletter, what they sell, and the con
 | `max_download_mb` | integer | no | The largest page or file the actor downloads from a creator's links, in megabytes. A link whose Content-Length is over the limit is not downloaded; a link with no Content-Length is read up to the limit, then stopped and discarded. Either way the row comes back with every other field filled and error_reason reads file_too_large, and the rest of the batch is not affected. 1 to 200. Default: 25. |
 | `batch_size` | integer | no | Rows fetched at once. Leave empty for the measured per platform default; the measurement is in the README. Higher is faster and, above the measured point, loses rows. |
 | `contribute_to_shared_pool` | boolean | no | On by default. Contributes the public records this run finds to a shared creator and agency pool that all users of this actor read from, so a later run reads what this one found. Only public data already in the returned rows is sent, never your Apify account, your input list, or your API keys, and a contribution is not charged. Set false to read the pool and write nothing. Default: true. |
+| `max_charge_usd` | number | no | Optional spending cap for this call, in USD. The actor stops before any charge that would take the run past this amount and keeps every row already charged. |
 
 Nothing is required. Link in Bio Scraper and Newsletter Detector answers a run with no usable input with a row carrying `row_status` and `error_reason` rather than failing, and the tool mirrors that.
 
